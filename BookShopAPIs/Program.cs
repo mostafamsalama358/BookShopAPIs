@@ -8,12 +8,17 @@ using Bl.Repos.Book;
 using Bl.Repos.BorrowBook;
 using Bl;
 using BookShopAPIs.Helpers;
+using Newtonsoft.Json;
+using Bl.Repos.Category;
+using Bl.Repos.Author;
 
 var builder = WebApplication.CreateBuilder(args);
-Console.WriteLine(".............");
 // Add services to the container.   
 
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore; // Handle reference loops if necessary
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerAuth();
@@ -64,6 +69,8 @@ builder.Services.AddCustomAuth(builder.Configuration);
 builder.Services.AddScoped<IAccount, Account>();
 builder.Services.AddScoped<IBook, ClsBook>();
 builder.Services.AddScoped<IBorrowBook, BorrowBook>();
+builder.Services.AddScoped<ICategory,Category>();
+builder.Services.AddScoped<IAuthor, Author>();
 builder.Services.AddTransient<IEmailServices,EmailServices>();
 builder.Services.Configure< EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 #endregion

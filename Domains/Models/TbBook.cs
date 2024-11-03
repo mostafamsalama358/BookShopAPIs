@@ -25,11 +25,7 @@ public class TbBook
     [MaxLength(255)]
     public string? ImageUrl { get; set; }  // Cloud storage (URL)
 
-    // Foreign key for Author
-    [ForeignKey("Author")]
-    public int AuthorId { get; set; }
-
-    public TbAuthor Author { get; set; } = null!;  // Navigation property for Author
+    public ICollection<TbAuthorBook> TbAuthorBooks { get; set; } = new List<TbAuthorBook>();
 
     // Foreign key to Category
     [ForeignKey("Category")]

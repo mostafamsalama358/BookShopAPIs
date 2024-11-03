@@ -21,9 +21,10 @@ namespace Domains.DTOS
         public string? ImageUrl { get; set; } = string.Empty; // Cloud storage (URL)
 
         [Required]
-        public int AuthorId { get; set; } // Foreign key for Author
+        public int AuthorId { get; set; }  // List of Author IDs for the many-to-many relationship
 
         [Required]
-        public int CategoryId { get; set; } // Foreign key for Category
+        public int CategoryId{ get; set; }  // Foreign key for Category
     }
+
 }

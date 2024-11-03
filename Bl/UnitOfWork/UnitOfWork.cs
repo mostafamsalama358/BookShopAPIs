@@ -5,6 +5,8 @@ using Domains;
 using Bl.Repos.Account;
 using Bl.Repos.Book;
 using Bl.Repos.BorrowBook;
+using Bl.Repos.Author;
+using Bl.Repos.Category;
 
 namespace Bl.UnitOfWork
 {
@@ -18,13 +20,18 @@ namespace Bl.UnitOfWork
 
         public IBook book { get; }
 
+
         public IBorrowBook BorrowBook { get; }
 
         public IEmailServices EmailServices { get; }
 
+        public IAuthor author { get; }
+
+        public ICategory Category { get; }
+
         public UnitOfWork(BookShopContextAPIs ctx
            ,IConfiguration _configuration,
-          RoleManager<IdentityRole> roleManager,UserManager<AppUser> userManager, IAccount password, IBook book
+          RoleManager<IdentityRole> roleManager,UserManager<AppUser> userManager, IAccount password, IBook book, IAuthor author , ICategory category
             , IBorrowBook borrowBook, IEmailServices emailServices)
         {
             _context = ctx;
@@ -35,7 +42,8 @@ namespace Bl.UnitOfWork
             this.book = book;
             this.BorrowBook = borrowBook;
             EmailServices = emailServices;
-
+            this.author = author;
+            Category = category;
         }
 
         public bool Save()

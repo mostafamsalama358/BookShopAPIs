@@ -19,6 +19,6 @@ namespace Domains.Models
         public string? Biography { get; set; }   // Short biography (optional)
 
         // Relationship with Book (one author can have many books)
-        public ICollection<TbBook> Books { get; set; } = new List<TbBook>();
+        public ICollection<TbAuthorBook> TbAuthorBooks { get; set; } = new List<TbAuthorBook>();
     }
 }

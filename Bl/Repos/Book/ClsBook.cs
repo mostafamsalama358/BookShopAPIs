@@ -22,16 +22,17 @@ namespace Bl.Repos.Book
         public IEnumerable<TbBook> GetBooks()
         {
             var books = _context.TbBooks
-                                .Include(b => b.Author)
+                .Include(a=>a.TbAuthorBooks)
+                .ThenInclude(a => a.TbAuthor)
                                 .Include(b => b.Category)
                                 .ToList();
             return books;
         }
 
-        public TbBook GetBookById(int id)
+        public TbBook? GetBookById(int id)
         {
-            return _context.TbBooks
-                .Include(b => b.Author)
+            return _context.TbBooks.Include(a => a.TbAuthorBooks)
+                .ThenInclude(a => a.TbAuthor)
                 .Include(b => b.Category)
                 .FirstOrDefault(b => b.Id == id);
         }
@@ -65,15 +66,15 @@ namespace Bl.Repos.Book
                         query = query.Where(a => a.Id == bookId);
                     }
                     else
-                        query = query.Where(a => a.Title.Contains(search) || a.Author.FirstName.Contains(search));
+                        query = query.Where(a => a.Title.Contains(search) /*|| a.Author.FirstName.Contains(search)*/);
 
-                var availablebook = await query.Include(a => a.Author).Include(a => a.Category)
+                var availablebook = await query/*.Include(a => a.Author)*/.Include(a => a.Category)
                      .Select(a => new BookDetailsDto
                      {
                          Id = a.Id,
                          Title = a.Title,
                          YearPublished = a.YearPublished,
-                         Author = a.Author != null ? new AuthorDto { AuthorFirstName = a.Author.FirstName, AuthorLastName = a.Author.LastName } : null, // Mapping Author
+                         //Author = a.Author != null ? new AuthorDto { AuthorFirstName = a.Author.FirstName, AuthorLastName = a.Author.LastName } : null, // Mapping Author
                          Category = a.Category != null ? new CategoryDto { CategoryNmae = a.Category.CategoryName } : null // Mapping Category
 
                      }).ToListAsync();
@@ -114,7 +115,7 @@ namespace Bl.Repos.Book
                 var query = _context.TbBooks.Where
                     (a => !_context.TbUserBooks.Any(b => b.BookId == a.Id && b.ReturnDate == null));
 
-                var availablebook = await query.Include(a => a.Author).Include(a => a.Category)
+                var availablebook = await query.Include(a => a.Category)
                      .Select(a => new BookDetailsDto
                      {
                          Id = a.Id,
@@ -124,7 +125,7 @@ namespace Bl.Repos.Book
                          //Ternary Operation
                          // condition ? value_if_true : value_if_false
 
-                         Author = a.Author != null ? new AuthorDto { AuthorFirstName = a.Author.FirstName, AuthorLastName = a.Author.LastName } : null, // Mapping Author
+                         //Author = a.Author != null ? new AuthorDto { AuthorFirstName = a.Author.FirstName, AuthorLastName = a.Author.LastName } : null, // Mapping Author
                          Category = a.Category != null ? new CategoryDto { CategoryNmae = a.Category.CategoryName } : null // Mapping Category
 
                      }).ToListAsync();
@@ -139,10 +140,10 @@ namespace Bl.Repos.Book
             }
         }
 
-        public async Task<object> GetAllAuthors()
-        {
-            return _context.TbAuthors.Include(a => a.Books).ToListAsync();
-        }
+        //public async Task<object> GetAllAuthors()
+        //{
+        //    return _context.TbAuthors.Include(a => a.Books).ToListAsync();
+        //}
 
 
     }

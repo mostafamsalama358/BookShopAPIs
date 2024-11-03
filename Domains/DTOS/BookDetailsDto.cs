@@ -25,7 +25,7 @@ namespace Domains.DTOS
 
 
 
-        public AuthorDto Author { get; set; } = null!;  // Navigation property for Author
+        public List< AuthorDto> Authors { get; set; } = new List<AuthorDto>(); // Updated to hold multiple authors
         public CategoryDto Category { get; set; } = null!;
     }
 

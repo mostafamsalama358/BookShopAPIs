@@ -71,7 +71,7 @@ namespace Bl.Repos.BorrowBook
         {
             var query = _context.TbUserBooks
                 .Where(b => b.ReturnDate == null )
-                .Include(b => b.Book).ThenInclude(b => b.Author)
+                .Include(b => b.Book)
                 .Include(b => b.Book).ThenInclude(b => b.Category);
 
             return await query.Select(b => new BookDetailsDto
@@ -79,11 +79,11 @@ namespace Bl.Repos.BorrowBook
                 Id = b.Book.Id,
                 Title = b.Book.Title,
                 YearPublished = b.Book.YearPublished,
-                Author = new AuthorDto
-                {
-                    AuthorFirstName = b.Book.Author.FirstName,
-                    AuthorLastName = b.Book.Author.LastName
-                },
+                //Author = new AuthorDto
+                //{
+                //    AuthorFirstName = b.Book.Author.FirstName,
+                //    AuthorLastName = b.Book.Author.LastName
+                //},
                 Category = new CategoryDto
                 {
                     CategoryNmae = b.Book.Category.CategoryName
@@ -96,7 +96,7 @@ namespace Bl.Repos.BorrowBook
             var overdueDate = DateTime.UtcNow.AddSeconds(3);
             var query = _context.TbUserBooks
                 .Where(b => b.ReturnDate == null && b.BorrowDate < overdueDate)
-                .Include(b => b.Book).ThenInclude(b => b.Author)
+                .Include(b => b.Book)
                 .Include(b => b.Book).ThenInclude(b => b.Category);
 
             return await query.Select(b => new BookDetailsDto
@@ -104,11 +104,11 @@ namespace Bl.Repos.BorrowBook
                 Id = b.Book.Id,
                 Title = b.Book.Title,
                 YearPublished = b.Book.YearPublished,
-                Author = new AuthorDto
-                {
-                    AuthorFirstName = b.Book.Author.FirstName,
-                    AuthorLastName = b.Book.Author.LastName
-                },
+                //Author = new AuthorDto
+                //{
+                //    AuthorFirstName = b.Book.Author.FirstName,
+                //    AuthorLastName = b.Book.Author.LastName
+                //},
                 Category = new CategoryDto
                 {
                     CategoryNmae = b.Book.Category.CategoryName
