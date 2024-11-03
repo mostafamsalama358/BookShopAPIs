@@ -15,5 +15,7 @@ namespace Bl.Repos.Book
         public TbBook? GetBookById(int id);
         Task<IEnumerable<BookDetailsDto>> GetAvailableBooksAsync(string? search);
          Task<IEnumerable<BookDetailsDto>> GetAllAvailableBooksAsync();
+        Task UpdateBookAsync(TbBook book, List<int> authorIds);
+        Task AddAuthorBookLinkAsync(int bookId, int authorId);
     }
 }

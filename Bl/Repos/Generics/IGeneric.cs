@@ -12,7 +12,7 @@ namespace Bl.Repos.Generics
         IEnumerable<T> GetAll();
         public  Task <T?> GetById(int id);
         public bool Delete(int id);
-        public  bool Update(T entity);
+        public void Update(T entity);
     }
 }
 

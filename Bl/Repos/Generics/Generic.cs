@@ -57,11 +57,9 @@ namespace Bl.Repos.Generics
             return await entity;
         }
 
-        public bool Update(T entity)
+        public void Update(T entity)
         {
-            _context.Set<T>().Update(entity);
-            return true;
-
+             _context.Set<T>().Update(entity);
         }
     }
 }

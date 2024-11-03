@@ -5,12 +5,14 @@ using BookShopAPIs.Helpers;
 using Domains;
 using Domains.DTOS;
 using Domains.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShopAPIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class BooksController : ControllerBase
     {
 
@@ -20,7 +22,7 @@ namespace BookShopAPIs.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpPost("AddNewBook")]
-        public async Task<IActionResult> AddBook(DtoAddBook book)
+        public async Task<IActionResult> AddBook(AddBookDto book)
         {
             try
             {
@@ -35,8 +37,17 @@ namespace BookShopAPIs.Controllers
                     //AuthorId = book.AuthorId,
                     CategoryId = book.CategoryId
                 };
+                // Add the book to the repository
                 _unitOfWork.book.Add(tb);
                 _unitOfWork.Save();
+
+                // Create the linking entry in TbAuthorBook using the new repository method
+                await _unitOfWork.book.AddAuthorBookLinkAsync(tb.Id,book.AuthorId);
+
+                // Save again to persist the link
+                 _unitOfWork.Save();
+
+
                 return Ok(tb);
             }
             catch (Exception ex)
@@ -46,6 +57,7 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetBooks")]
+        [AllowAnonymous]
         public IActionResult GetBooks(int pagenumber = 1, int pagesize = 10)
         {
             try
@@ -101,6 +113,8 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetBookById")]
+        [AllowAnonymous]
+
         public IActionResult GetBookById(int id)
         {
             try
@@ -132,82 +146,48 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpPut("UpdateBook")]
-        public async Task<IActionResult> UpdateBook(DtoUpdateBook updateBook)
+        public async Task<IActionResult> UpdateBook(UpdateBookDto updateBook)
         {
             try
             {
-                // Validate model state
                 if (!ModelState.IsValid)
-                {
                     return BadRequest(ModelState);
-                }
 
-                // Check if the book exists
-                var existingBook = await _unitOfWork.book.GetById(updateBook.Id);
-                if (existingBook == null)
-                {
-                    return NotFound($"Book Id {updateBook.Id} Not Found");
-                }
+                var book =  _unitOfWork.book.GetBookById(updateBook.Id);
+                if (book == null)
+                    return NotFound("Book not found");
 
-                // Mapping the updated values to the existing book
-                existingBook.Title = updateBook.Title;
-                existingBook.YearPublished = updateBook.YearPublished;
-                existingBook.ImageUrl = updateBook.ImageUrl;
+                // Update basic fields
+                book.Title = updateBook.Title;
+                book.YearPublished = updateBook.YearPublished;
 
-                // Update the category
-                var existingCategory = await _unitOfWork.Category.GetByCategoryName(updateBook.Category.CategoryName);
-                if (existingCategory == null)
-                {
-                    // If category does not exist, you can create a new one
-                    existingCategory = new TbCategory { CategoryName = updateBook.Category.CategoryName };
-                    _unitOfWork.Category.Add(existingCategory);
-                }
-                existingBook.Category = existingCategory; // Update the existing category
+                // Update category
+                var category = await _unitOfWork.Category.GetById(book.CategoryId);
+                if(category==null)
+                    return BadRequest("Invalid category ID");
+                book.Category = category;
 
-                // Clear existing authors and create new relationships
-                existingBook.TbAuthorBooks.Clear();
+                //// Update authors
+                //var authors = await _unitOfWork.author.GetAuthorsByIdsAsync(updateBook.AuthorIds);
+                //if (authors == null || !authors.Any())
+                //    return BadRequest("Invalid author IDs");
+
+                //book.TbAuthorBooks.Clear();
+                //foreach (var author in authors)
+                //{
+                //    var authorBook = new TbAuthorBook
+                //    {
+                //        TbAuthorId = author.Id,
+                //        TbBookId = book.Id
+                //    };
+                //    _unitOfWork.author.Update(authorBook);
+                //}
 
 
-                foreach (var authorDto in updateBook.Authors)
-                {
-                    // Check if the author already exists
-                    var author = await _unitOfWork.author.GetByFullName(authorDto.FirstName, authorDto.LastName);
-                    if (author == null)
-                    {
-                        // If the author doesn't exist, create a new one
-                        author = new TbAuthor
-                        {
-                            FirstName = authorDto.FirstName,
-                            LastName = authorDto.LastName
-                        };
-                        _unitOfWork.author.Add(author);
-                    }
+                // Call repository method to update book and its authors
+                await _unitOfWork.book.UpdateBookAsync(book, updateBook.AuthorIds);
 
-                    // Add the relationship to TbAuthorBooks
-                    existingBook.TbAuthorBooks.Add(new TbAuthorBook
-                    {
-                        TbAuthorId = author.Id, // Set the author's ID
-                        TbBookId = existingBook.Id // Set the book's ID
-                    });
-
-                    // Ensure the author is tracked
-                    var trackedAuthor = await _unitOfWork.author.GetByFullName(authorDto.FirstName, authorDto.LastName);
-                    if (trackedAuthor != null)
-                    {
-                        // Add the new relationship
-                        existingBook.TbAuthorBooks.Add(new TbAuthorBook
-                        {
-                            TbAuthorId = trackedAuthor.Id, // Set the author's ID
-                            TbBookId = existingBook.Id // Set the book's ID
-                        });
-                    }
-                }
-
-                // Update the book
-                _unitOfWork.book.Update(existingBook);
-                 _unitOfWork.Save(); // Ensure you save changes
-
-                return Ok(existingBook);
+                return Ok("Book updated successfully");
             }
             catch (Exception ex)
             {
@@ -237,19 +217,6 @@ namespace BookShopAPIs.Controllers
             }
         }
 
-        //[HttpGet("Authors")]
-        //public async Task<IActionResult> GetAllAuthors()
-        //{
-        //    var books = _unitOfWork.GetBooks();
-        //    if (!books.Any())  // If the list is empty
-        //    {
-        //        return Ok("No books found.");
-        //    }
-
-        //    // Calculate pagination values
-        //    var Totalcount = books.Count();
-
-        //}
     }
 }
 

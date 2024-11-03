@@ -11,5 +11,6 @@ namespace Bl.Repos.Author
     public interface IAuthor : IGeneric<TbAuthor> 
     {
         Task<TbAuthor?> GetByFullName(string firstName, string lastName);
+        Task<List<TbAuthor>> GetAuthorsByIdsAsync(List<int> authorIds);
     }
 }

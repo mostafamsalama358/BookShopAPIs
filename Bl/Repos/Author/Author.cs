@@ -23,6 +23,12 @@ namespace Bl.Repos.Author
             return await context.TbAuthors
                 .FirstOrDefaultAsync(a => a.FirstName == firstName && a.LastName == lastName);
         }
+        public async Task<List<TbAuthor>> GetAuthorsByIdsAsync(List<int> authorIds)
+        {
+            return await context.TbAuthors
+                .Where(author => authorIds.Contains(author.Id))
+                .ToListAsync();
+        }
 
     }
 }

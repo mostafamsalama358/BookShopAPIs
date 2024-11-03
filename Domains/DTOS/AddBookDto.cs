@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domains.DTOS
 {
-    public class DtoAddBook
+    public class AddBookDto
     {
         public int Id { get; set; }
        [Required]

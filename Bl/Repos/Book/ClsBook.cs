@@ -140,6 +140,44 @@ namespace Bl.Repos.Book
             }
         }
 
+        public async Task UpdateBookAsync(TbBook book, List<int> authorIds)
+        {
+            // Attach the book entity if needed
+            _context.TbBooks.Attach(book);
+
+            // Clear existing authors in the many-to-many relationship
+            var existingAuthors = _context.TbAuthorBooks.Where(ab => ab.TbBookId == book.Id);
+            _context.TbAuthorBooks.RemoveRange(existingAuthors);
+
+            // Add the new authors based on the provided authorIds
+            foreach (var authorId in authorIds)
+            {
+                var authorBookLink = new TbAuthorBook
+                {
+                    TbBookId = book.Id,
+                    TbAuthorId = authorId
+                };
+                _context.TbAuthorBooks.Add(authorBookLink);
+            }
+
+            // Update other fields in the book
+            _context.TbBooks.Update(book);
+
+            // Save changes to persist the updates to the linking table and book details
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task AddAuthorBookLinkAsync(int bookId, int authorId)
+        {
+            var authorBookLink = new TbAuthorBook
+            {
+                TbBookId = bookId,
+                TbAuthorId = authorId
+            };
+
+            await _context.TbAuthorBooks.AddAsync(authorBookLink);
+        }
+
         //public async Task<object> GetAllAuthors()
         //{
         //    return _context.TbAuthors.Include(a => a.Books).ToListAsync();
