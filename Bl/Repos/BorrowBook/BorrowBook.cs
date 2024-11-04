@@ -1,6 +1,6 @@
 ﻿using Bl.Repos.Generics;
 using Domains;
-using Domains.DTOS;
+using Domains.DTOS.ForBook;
 using Domains.Models;
 using Microsoft.EntityFrameworkCore;
 using System;

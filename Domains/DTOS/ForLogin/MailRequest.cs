@@ -1,4 +1,4 @@
-﻿namespace Domains;
+﻿namespace Domains.DTOS.ForLogin;
 
 public class MailRequest
 {

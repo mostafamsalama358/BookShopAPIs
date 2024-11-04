@@ -1,5 +1,5 @@
-﻿using Domains;
-using static Domains.DTOS.PasswordRecoveryDto;
+﻿using Domains.DTOS.ForLogin;
+using static Domains.DTOS.ForLogin.PasswordRecoveryDto;
 
 namespace Bl;
 

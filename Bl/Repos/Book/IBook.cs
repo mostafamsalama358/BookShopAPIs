@@ -1,6 +1,6 @@
 ﻿using Bl.Repos.Generics;
 using Domains;
-using Domains.DTOS;
+using Domains.DTOS.ForBook;
 using System;
 using System.Collections.Generic;
 using System.Linq;

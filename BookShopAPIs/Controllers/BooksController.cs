@@ -3,7 +3,7 @@ using Bl.Repos.Category;
 using Bl.UnitOfWork;
 using BookShopAPIs.Helpers;
 using Domains;
-using Domains.DTOS;
+using Domains.DTOS.ForBook;
 using Domains.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domains.DTOS
+namespace Domains.DTOS.ForBorrowing
 {
     public class BorrowbookRequestDto
     {

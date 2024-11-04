@@ -1,9 +1,9 @@
 ﻿using Bl.UnitOfWork;
 using Domains;
-using Domains.DTOS;
+using Domains.DTOS.ForLogin;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using static Domains.DTOS.PasswordRecoveryDto;
+using static Domains.DTOS.ForLogin.PasswordRecoveryDto;
 
 namespace BookShopAPIs.Controllers
 {

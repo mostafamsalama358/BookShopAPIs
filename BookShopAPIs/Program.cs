@@ -11,6 +11,7 @@ using BookShopAPIs.Helpers;
 using Newtonsoft.Json;
 using Bl.Repos.Category;
 using Bl.Repos.Author;
+using Domains.DTOS.ForLogin;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.   

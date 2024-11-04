@@ -1,5 +1,5 @@
 ﻿using Bl.UnitOfWork;
-using Domains.DTOS;
+using Domains.DTOS.ForRole;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

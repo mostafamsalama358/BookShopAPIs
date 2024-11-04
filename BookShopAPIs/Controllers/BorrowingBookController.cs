@@ -1,5 +1,5 @@
 ﻿using Bl.UnitOfWork;
-using Domains.DTOS;
+using Domains.DTOS.ForBorrowing;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;

@@ -1,10 +1,9 @@
-﻿using Domains;
-using Domains.DTOS;
+﻿using Domains.DTOS.ForLogin;
 using MailKit.Security;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using System.Runtime;
-using static Domains.DTOS.PasswordRecoveryDto;
+using static Domains.DTOS.ForLogin.PasswordRecoveryDto;
 namespace Bl
 {
     public class EmailServices : IEmailServices

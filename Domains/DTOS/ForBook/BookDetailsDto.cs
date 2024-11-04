@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domains.DTOS
+namespace Domains.DTOS.ForBook
 {
     public class BookDetailsDto
     {
@@ -25,7 +25,7 @@ namespace Domains.DTOS
 
 
 
-        public List< AuthorDto> Authors { get; set; } = new List<AuthorDto>(); // Updated to hold multiple authors
+        public List<AuthorDto> Authors { get; set; } = new List<AuthorDto>(); // Updated to hold multiple authors
         public CategoryDto Category { get; set; } = null!;
     }
 

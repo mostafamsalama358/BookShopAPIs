@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domains.DTOS
+namespace Domains.DTOS.ForBook
 {
     public class UserBookDto
     {
