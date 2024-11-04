@@ -35,6 +35,7 @@ namespace Bl.Repos.Book
                 .ThenInclude(a => a.TbAuthor)
                 .Include(b => b.Category)
                 .FirstOrDefault(b => b.Id == id);
+
         }
 
         public async Task<IEnumerable<BookDetailsDto>> GetAvailableBooksAsync(string? search)

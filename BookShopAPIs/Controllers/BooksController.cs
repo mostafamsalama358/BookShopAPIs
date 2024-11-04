@@ -1,6 +1,7 @@
 ﻿using Bl.Repos.Book;
 using Bl.Repos.Category;
 using Bl.UnitOfWork;
+using Bl.ValidationService;
 using BookShopAPIs.Helpers;
 using Domains;
 using Domains.DTOS.ForBook;
@@ -15,10 +16,11 @@ namespace BookShopAPIs.Controllers
     [Authorize(Roles ="Admin")]
     public class BooksController : ControllerBase
     {
-
+        private readonly IValidationService<AddBookDto> _validationService;
         IUnitOfWork _unitOfWork;
-        public BooksController(IUnitOfWork unitOfWork)
+        public BooksController(IValidationService<AddBookDto> validationService, IUnitOfWork unitOfWork)
         {
+            _validationService = validationService;
             _unitOfWork = unitOfWork;
         }
         [HttpPost("AddNewBook")]
@@ -166,23 +168,6 @@ namespace BookShopAPIs.Controllers
                 if(category==null)
                     return BadRequest("Invalid category ID");
                 book.Category = category;
-
-                //// Update authors
-                //var authors = await _unitOfWork.author.GetAuthorsByIdsAsync(updateBook.AuthorIds);
-                //if (authors == null || !authors.Any())
-                //    return BadRequest("Invalid author IDs");
-
-                //book.TbAuthorBooks.Clear();
-                //foreach (var author in authors)
-                //{
-                //    var authorBook = new TbAuthorBook
-                //    {
-                //        TbAuthorId = author.Id,
-                //        TbBookId = book.Id
-                //    };
-                //    _unitOfWork.author.Update(authorBook);
-                //}
-
 
                 // Call repository method to update book and its authors
                 await _unitOfWork.book.UpdateBookAsync(book, updateBook.AuthorIds);

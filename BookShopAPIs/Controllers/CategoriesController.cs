@@ -1,4 +1,5 @@
-﻿using Bl.UnitOfWork;
+﻿using Bl.Repos.Book;
+using Bl.UnitOfWork;
 using Domains;
 using Domains.DTOS.ForBook;
 using Domains.DTOS.ForCategories;
@@ -55,6 +56,76 @@ namespace BookShopAPIs.Controllers
             }
 
 
+        }
+
+        [HttpGet("GetAllCategory")]
+        public async Task<IActionResult> GetAllCategory()
+        {
+            try
+            {
+                var category = _unitOfWork.Category.GetAll();
+
+                return Ok(category);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+
+        }
+
+        [HttpPut("UpdateCategory")]
+        public async Task<IActionResult> UpdateCategory(int id,UpdateCategoryDto updateCategory)
+        {
+            try
+            {
+                // Validate model state
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var existedCategory = await _unitOfWork.Category.GetById(id);
+                if (existedCategory == null)
+                {
+                    return NotFound($"Category Id {id} Not Found");
+                }
+                existedCategory.CategoryName = updateCategory.CategoryName ?? existedCategory.CategoryName;
+
+                //_unitOfWork.Category.Update(existedCategory);
+                _unitOfWork.Save();
+                return Ok(updateCategory);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+        }
+
+        [HttpDelete("DeleteCategory")]
+        public async Task<IActionResult> DeleteCategory(int id)
+        {
+            try
+            {
+                // Validate model state
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+                var existedCategory = await _unitOfWork.Category.GetById(id);
+                if (existedCategory == null)
+                    return NotFound($"Category Id {id} Not Found");
+
+                _unitOfWork.Category.Delete(id);
+                _unitOfWork.Save();
+                return Ok(existedCategory);
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

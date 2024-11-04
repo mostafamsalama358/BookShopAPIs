@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Bl.Repos.Category;
 using Bl.Repos.Author;
 using Domains.DTOS.ForLogin;
+using Bl.ValidationService;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.   
@@ -74,6 +75,8 @@ builder.Services.AddScoped<ICategory,Category>();
 builder.Services.AddScoped<IAuthor, Author>();
 builder.Services.AddTransient<IEmailServices,EmailServices>();
 builder.Services.Configure< EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+//builder.Services.AddScoped(typeof(IValidationService<>), typeof(ValidationService<>));
+
 #endregion
 
 #region Unit Of Work
