@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using Bl.Repos.Category;
 using Bl.Repos.Author;
 using Domains.DTOS.ForLogin;
+using BookShopAPIs.MiddleWares;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.   
@@ -87,6 +88,8 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 var app = builder.Build();
 
 
+// Add the rate limiting middleware 
+app.UseMiddleware<RateLimitingMiddleWare>();
 
 // Enable CORS for the specified policy
 app.UseCors("AllowLocalhost");
@@ -97,8 +100,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
 app.UseHttpsRedirection();
+
+app.UseMiddleware<AcceptLanguageMiddleware>();
+app.UseMiddleware<ProfilingMiddleware>();
+
 
 app.UseAuthentication(); 
 app.UseAuthorization();

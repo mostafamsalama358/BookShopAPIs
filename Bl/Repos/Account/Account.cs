@@ -140,23 +140,6 @@ namespace Bl.Repos.Account
             mailrequest.EmailBody = GenerateEmailBody(name, otp);
             await _emailServices.SendEmail(mailrequest);
         }
-        //public async Task requestAsync(string email, string otp, string name)
-        //{
-        //    // Set OTP expiration time
-        //    var expiration = DateTime.Now.AddMinutes(5);
-        //    OtpStore[email] = (otp, expiration);
-
-        //    // Create mail request
-        //    var mailRequest = new MailRequest
-        //    {
-        //        Email = email,
-        //        Subject = "Thank you for Registering: Your OTP Code",
-        //        EmailBody = GenerateEmailBodyreqest(name, otp)
-        //    };
-
-        //    // Send OTP email asynchronously
-        //    await _emailServices.SendEmail(mailRequest);
-        //}
         public string GenerateEmailBody(string name, string otptext)
         {
             string emailbody = "<div style='width:100%;background-color:grey'>";

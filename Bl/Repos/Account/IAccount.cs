@@ -14,7 +14,6 @@ namespace Bl.Repos.Account
         Task<bool> ValidateOtpAsync(string email, string otp);
 
         //--------------------------------
-        //Task requestAsync(string email, string otp, string name);
         string GenerateEmailBodyreqest(string name, string otptext);
     }
 }
