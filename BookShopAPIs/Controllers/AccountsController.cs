@@ -55,23 +55,23 @@ namespace BookShopAPIs.Controllers
             }
         }
 
-        [HttpGet("confirm-email")]
-        public async Task<IActionResult> ConfirmEmail(string email, string token)
-        {
-            var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
-            if (user == null)
-            {
-                return BadRequest("Invalid email confirmation request.");
-            }
+        //[HttpGet("confirm-email")]
+        //public async Task<IActionResult> ConfirmEmail(string email, string token)
+        //{
+        //    var user = await _unitOfWork.UserManager.FindByEmailAsync(email);
+        //    if (user == null)
+        //    {
+        //        return BadRequest("Invalid email confirmation request.");
+        //    }
 
-            var result = await _unitOfWork.UserManager.ConfirmEmailAsync(user, token);
-            if (result.Succeeded)
-            {
-                return Ok("Email confirmed successfully.");
-            }
+        //    var result = await _unitOfWork.UserManager.ConfirmEmailAsync(user, token);
+        //    if (result.Succeeded)
+        //    {
+        //        return Ok("Email confirmed successfully.");
+        //    }
 
-            return BadRequest("Error confirming email.");
-        }
+        //    return BadRequest("Error confirming email.");
+        //}
 
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn(DtoLogIn login)

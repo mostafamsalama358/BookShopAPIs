@@ -3,6 +3,7 @@ using Bl.UnitOfWork;
 using Domains;
 using Domains.DTOS.ForBook;
 using Domains.DTOS.ForCategories;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,8 @@ namespace BookShopAPIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Admin")]
+
     public class CategoriesController : ControllerBase
     {
         IUnitOfWork _unitOfWork;

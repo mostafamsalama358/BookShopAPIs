@@ -5,6 +5,7 @@ using Domains.DTOS.ForAuthor;
 using Domains.DTOS.ForBook;
 using Domains.DTOS.ForCategories;
 using Domains.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -12,6 +13,7 @@ namespace BookShopAPIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles ="Admin")]
     public class AuthorsController : ControllerBase
     {
         IUnitOfWork _unitOfWork;
@@ -20,6 +22,7 @@ namespace BookShopAPIs.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpPost("AdNewAuthor")]
+
         public IActionResult AddAuthors(AddAuthorDto cauthoryDto)
         {
             try
@@ -45,6 +48,8 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetAllAuthors")]
+        [AllowAnonymous]
+
         public IActionResult GetAllAuthors()
         {
             try
@@ -63,6 +68,7 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetAuthorsById")]
+        [AllowAnonymous]
         public async Task< IActionResult> GetAllAuthorsById(int id)
         {
             try

@@ -1,5 +1,6 @@
 ﻿using Bl.UnitOfWork;
 using Domains.DTOS.ForBorrowing;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -107,6 +108,8 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetOverdueBooks")]
+        [Authorize(Roles = "Admin")]
+
         public async Task<IActionResult> GetOverdueBooks()
         {
             try
@@ -127,6 +130,7 @@ namespace BookShopAPIs.Controllers
 
         // Return a book
         [HttpPost("ReturnBook")]
+        [Authorize(Roles ="Admin")]
         public async Task<IActionResult> ReturnBook([FromBody] BorrowbookRequestDto request)    
         {
             try
