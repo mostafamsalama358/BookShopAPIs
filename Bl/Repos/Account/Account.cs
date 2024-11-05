@@ -129,32 +129,34 @@ namespace Bl.Repos.Account
 
         public async Task StoreOtpAsync(string email, string otp, string name)
         {
-            //// Set the OTP expiration time (e.g., 5 minutes)
-            //var expiration = DateTime.Now.AddMinutes(5);
-            //OtpStore[email] = (otp, expiration);
+            // Set the OTP expiration time (e.g., 5 minutes)
+            var expiration = DateTime.Now.AddMinutes(5);
+            OtpStore[email] = (otp, expiration);
 
-            //// You may want to store it in a more persistent way, like a database.
-            ///
+            // You may want to store it in a more persistent way, like a database.
             var mailrequest = new MailRequest();
             mailrequest.Email = email;
             mailrequest.Subject = "Thank for Registering : OTP";
             mailrequest.EmailBody = GenerateEmailBody(name, otp);
             await _emailServices.SendEmail(mailrequest);
         }
-        public async Task requestAsync(string email, string otp, string name)
-        {
-            //// Set the OTP expiration time (e.g., 5 minutes)
-            //var expiration = DateTime.Now.AddMinutes(5);
-            //OtpStore[email] = (otp, expiration);
+        //public async Task requestAsync(string email, string otp, string name)
+        //{
+        //    // Set OTP expiration time
+        //    var expiration = DateTime.Now.AddMinutes(5);
+        //    OtpStore[email] = (otp, expiration);
 
-            //// You may want to store it in a more persistent way, like a database.
-            ///
-            var mailrequest = new MailRequest();
-            mailrequest.Email = email;
-            mailrequest.Subject = "Thank for Registering : OTP";
-            mailrequest.EmailBody = GenerateEmailBodyreqest(name, otp);
-            await _emailServices.SendEmail(mailrequest);
-        }
+        //    // Create mail request
+        //    var mailRequest = new MailRequest
+        //    {
+        //        Email = email,
+        //        Subject = "Thank you for Registering: Your OTP Code",
+        //        EmailBody = GenerateEmailBodyreqest(name, otp)
+        //    };
+
+        //    // Send OTP email asynchronously
+        //    await _emailServices.SendEmail(mailRequest);
+        //}
         public string GenerateEmailBody(string name, string otptext)
         {
             string emailbody = "<div style='width:100%;background-color:grey'>";
@@ -173,14 +175,15 @@ namespace Bl.Repos.Account
             return emailbody;
         }
 
+
         public async Task<bool> ValidateOtpAsync(string email, string otp)
         {
+
             if (OtpStore.TryGetValue(email, out var storedOtp))
             {
-                // Check if the OTP is valid and not expired
                 if (storedOtp.Otp == otp && storedOtp.Expiration > DateTime.Now)
                 {
-                    // Optionally, remove the OTP from the store after verification
+                    // Optionally remove the OTP after successful validation
                     OtpStore.Remove(email);
                     return true;
                 }

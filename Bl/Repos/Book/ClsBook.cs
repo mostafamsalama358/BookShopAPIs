@@ -168,15 +168,27 @@ namespace Bl.Repos.Book
             await _context.SaveChangesAsync();
         }
 
-        public async Task AddAuthorBookLinkAsync(int bookId, int authorId)
+        public async Task AddAuthorBookLinkAsync(int bookId, List<int> authorIds)
         {
-            var authorBookLink = new TbAuthorBook
+            foreach (var authorId in authorIds)
             {
-                TbBookId = bookId,
-                TbAuthorId = authorId
-            };
+                // Check if the relationship already exists
+                var existingLink = await _context.TbAuthorBooks
+                    .AnyAsync(ab => ab.TbBookId == bookId && ab.TbAuthorId == authorId);
 
-            await _context.TbAuthorBooks.AddAsync(authorBookLink);
+                if (!existingLink)
+                {
+                    var authorBookLink = new TbAuthorBook
+                    {
+                        TbBookId = bookId,
+                        TbAuthorId = authorId
+                    };
+
+                    await _context.TbAuthorBooks.AddAsync(authorBookLink);
+                }
+            }
+
+            await _context.SaveChangesAsync(); // Save changes after adding all links
         }
 
         //public async Task<object> GetAllAuthors()
@@ -184,6 +196,6 @@ namespace Bl.Repos.Book
         //    return _context.TbAuthors.Include(a => a.Books).ToListAsync();
         //}
 
-
     }
 }
+

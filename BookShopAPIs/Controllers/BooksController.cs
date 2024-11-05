@@ -1,11 +1,7 @@
-﻿using Bl.Repos.Book;
-using Bl.Repos.Category;
-using Bl.UnitOfWork;
-using Bl.ValidationService;
+﻿using Bl.UnitOfWork;
 using BookShopAPIs.Helpers;
 using Domains;
 using Domains.DTOS.ForBook;
-using Domains.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,14 +9,12 @@ namespace BookShopAPIs.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Roles ="Admin")]
+    [Authorize(Roles = "Admin")]
     public class BooksController : ControllerBase
     {
-        private readonly IValidationService<AddBookDto> _validationService;
         IUnitOfWork _unitOfWork;
-        public BooksController(IValidationService<AddBookDto> validationService, IUnitOfWork unitOfWork)
+        public BooksController( IUnitOfWork unitOfWork)
         {
-            _validationService = validationService;
             _unitOfWork = unitOfWork;
         }
         [HttpPost("AddNewBook")]
@@ -35,8 +29,7 @@ namespace BookShopAPIs.Controllers
                 {
                     Title = book.Title,
                     YearPublished = book.YearPublished, // Mapping YearPublished
-                    ImageUrl = book.ImageUrl,
-                    //AuthorId = book.AuthorId,
+                    ImageUrl = book.ImageUrl,                  
                     CategoryId = book.CategoryId
                 };
                 // Add the book to the repository

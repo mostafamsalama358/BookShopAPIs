@@ -1,16 +1,15 @@
 ﻿using Bl.Repos.Generics;
+using Domains.DTOS.ForAuthor;
 using Domains.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Bl.Repos.Author
 {
-    public interface IAuthor : IGeneric<TbAuthor> 
+    public interface IAuthor : IGeneric<TbAuthor>
     {
         Task<TbAuthor?> GetByFullName(string firstName, string lastName);
         Task<List<TbAuthor>> GetAuthorsByIdsAsync(List<int> authorIds);
+        List<AddAuthorDto> MapToDto(IEnumerable<TbAuthor> author);
+        Task<TbAuthor?> GetByAuthorId(int authorid);
+         Task<AuthorDetailsDto> MapToDetailsDtoAsync(TbAuthor authors);
     }
 }

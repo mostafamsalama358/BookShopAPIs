@@ -18,7 +18,7 @@ namespace BookShopAPIs.Controllers
             _unitOfWork = unitOfWork;
         }
         [HttpPost("AddCategory")]
-        public async Task<IActionResult> AddCategories(AddCategoryDto categoryDto)
+        public IActionResult AddCategories(AddCategoryDto categoryDto)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace BookShopAPIs.Controllers
             }
         }
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory(int id)
+        public IActionResult GetCategory(int id)
         {
             try
             {
@@ -59,7 +59,7 @@ namespace BookShopAPIs.Controllers
         }
 
         [HttpGet("GetAllCategory")]
-        public async Task<IActionResult> GetAllCategory()
+        public IActionResult GetAllCategory()
         {
             try
             {

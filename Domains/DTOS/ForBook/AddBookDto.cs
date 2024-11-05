@@ -9,7 +9,6 @@ namespace Domains.DTOS.ForBook
 {
     public class AddBookDto
     {
-        public int Id { get; set; }
         [Required]
         [MaxLength(255)]
         public string Title { get; set; } = string.Empty;
@@ -21,10 +20,11 @@ namespace Domains.DTOS.ForBook
         public string? ImageUrl { get; set; } = string.Empty; // Cloud storage (URL)
 
         [Required]
-        public int AuthorId { get; set; }  // List of Author IDs for the many-to-many relationship
+        public List<int> AuthorId { get; set; } = new List<int>();  // List of Author IDs for the many-to-many relationship
 
         [Required]
-        public int CategoryId { get; set; }  // Foreign key for Category
-    }
+        public int CategoryId { get; set; }  
+        //public List<int> AuthorIds { get; set; }  // New property for multiple author IDs
 
+    }
 }

@@ -145,7 +145,7 @@ namespace BookShopAPIs.Controllers
 
 
                 // Send the email
-                await _unitOfWork.password.requestAsync(request.Email, resetLink, token);
+                await _unitOfWork.password.StoreOtpAsync(request.Email, resetLink, token);
 
                 // Return success message
                 return Ok("Password reset link has been sent to your email.");
